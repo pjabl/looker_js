@@ -1,3 +1,4 @@
+(function () {
 const visObject = {
     create: function(element, config){
         element.innerHTML = "";
@@ -60,3 +61,5 @@ const visObject = {
 };
 
 looker.plugins.visualizations.add(visObject);
+}
+    ());
