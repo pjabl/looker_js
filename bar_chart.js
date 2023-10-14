@@ -1,10 +1,17 @@
-(function () {
-const visObject = {
+looker.plugins.visualizations.add( {
     create: function(element, config){
         element.innerHTML = "";
+        const vizCanvas = document.createElement('canvas')
+        vizCanvas.setAttribute("id", "myChartOpaqueBars")
+
+        const vizDiv = document.getElementById("vis")
+        vizDiv.appendChild(vizCanvas)
     },
 
     updateAsync: function (data, element, config, queryResponse, details, doneRendering) {
+        
+        console.log("data",data);
+
         const data_labels = []
         const actual_data = []
 
@@ -14,15 +21,38 @@ const visObject = {
             data_labels.push(d[keys[0]])
             actual_data.push(d[keys[1]])
         })
+        console.log("data_labels",data_labels);
+        console.log("actual_data",actual_data);
 
-        const vizCanvas = document.createElement('canvas')
-        vizCanvas.setAttribute("id", "myChart")
+        // try {
+        //     document.getElementById("0").destroy();
+        //   } catch (error) {
+        //     console.error("Error destroying:", error.message);
+        //   }
+        
+        // const allElements = document.querySelectorAll('*');
+        // allElements.forEach(element => {
+        // console.log(element);
+        // });
 
-        const vizDiv = document.getElementById("vis")
-        vizDiv.appendChild(vizCanvas)
 
-        const ctx = document.getElementById("myChart")
-        const myChart = new Chart(ctx, {
+        const ctx = document.getElementById("myChartOpaqueBars")
+        console.log(ctx);
+        
+        var chart = Chart.getChart("myChartOpaqueBars")
+
+        if (typeof chart !== 'undefined') {
+            console.log("chart defined");
+            console.log(chart);
+            chart.clear();
+            chart.destroy();
+            console.log("chart destroyed");
+        } else {
+            console.log("chart is undefined");
+        }
+        
+        myChart = null;
+        var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: data_labels,
@@ -55,11 +85,10 @@ const visObject = {
 
             }
         });
+        
+        console.log(myChart);
 
         doneRendering()
     }
-};
+});
 
-looker.plugins.visualizations.add(visObject);
-}
-    ());
